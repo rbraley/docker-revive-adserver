@@ -2,15 +2,22 @@ ad_server:
   build: ./docker/ad_server
   links:
     - mysql
+  ports:
+    - 9000:9000
 nginx:
   build: ./docker/nginx/
   links:
     - ad_server
   volumes_from:
     - ad_server
+  ports:
+    - 80:80
+    - 443:443
   environment:
     VIRTUAL_HOST: adserver.dev
 
 mysql:
   image: mysql:5.6
   env_file: ./docker/env_file_mysql
+  ports:
+    - 3306:3306
